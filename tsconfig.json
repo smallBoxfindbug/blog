@@ -1,0 +1,22 @@
+{
+  // "extends": "./tsconfig.extend.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "lib": ["es6", "dom"],
+    "rootDir": "src",
+    "target": "es6",
+    "sourceMap": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "strictNullChecks": true,
+    "noImplicitAny": true,
+    "allowJs": true,
+    "strict": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "suppressImplicitAnyIndexErrors": true,
+    "jsx": "react"
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_module","dist"],
+}
