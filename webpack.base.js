@@ -2,30 +2,47 @@
  * @Author: heyouqin@moyi365.com
  * @LastEditors: heyouqin@moyi365.com
  * @Date: 2021-12-06 17:58:29
- * @LastEditTime: 2021-12-06 18:55:24
+ * @LastEditTime: 2021-12-08 18:51:41
  * @Descripttion: file content
  */
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HTMLWebpackPLugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 module.exports = {
 	entry: {
-		page1: 'src/pages/managePage/index.tsx',
-		page1: 'src/pages/blogPage/index.tsx'
+		page1: path.join(__dirname, 'src/modules/page1', 'index.tsx'),
+		page2: path.join(__dirname, 'src/modules/page2', 'index.tsx')
+		// page2: path.resolve(__dirname, 'src/modules/page2/index.tsx')
 	},
 	output: {
-		path: path.join(__dirname, './build'),
-		filename: '[name]/index.js',
+		path: path.resolve('build'),
+		filename: '[name]/[name][hash:5].js',
+		chunkFilename: '[name]/[name][hash:5].js',
 		environment: {
 			arrowFunction: false
 		},
-		publicPath: '/'
+		publicPath: '/',
+    clean: true,
 	},
 	module: {
 		rules: [
+			{
+				test: /\.css$/,
+				exclude: /node_modules/,
+				use: [ MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader' ]
+			},
+			{
+				test: /\.scss$/,
+				exclude: /node_modules/,
+				use: [ MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'sass-loader' ]
+			},
+			{
+				test: /\.less$/,
+				use: [ MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'less-loader' ]
+			},
 			{
 				test: /\.(png|jpg|git)$/,
 				loader: 'url-loader',
@@ -34,14 +51,6 @@ module.exports = {
 					limit: 8 * 1000,
 					esModule: false
 				}
-			},
-			{
-				test: /\.css$/,
-				use: [ MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader' ]
-			},
-			{
-				test: /\.scss$/,
-				use: [ MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'sass-loader' ]
 			},
 			{
 				test: /\.html$/,
@@ -60,15 +69,20 @@ module.exports = {
 		]
 	},
 	plugins: [
-		new HTMLWebpackPLugin({
-			template: './public/managePage/index.html',
-			filename: '[name].[hash:8].html'
-		}),
-		new HTMLWebpackPLugin({
-			template: './public/blogPage/index.html',
-			filename: '[name].[hash:8].html'
-		}),
 		new CleanWebpackPlugin(),
+		new HTMLWebpackPLugin({
+			template: './public/index.html',
+			filename: 'page1.html',
+			chunks: [ 'page1' ],
+			excludeChunks: [ 'page2' ]
+		}),
+		new HTMLWebpackPLugin({
+			template: './public/index.html',
+			filename: 'index.html',
+			chunks: [ 'page2' ],
+			excludeChunks: [ 'page1' ]
+		}),
+
 		new MiniCssExtractPlugin({
 			filename: '[name].[hash:8].css'
 		}),
@@ -81,5 +95,7 @@ module.exports = {
 			canPrint: true
 		})
 	],
-	extensions: [ '.js', '.json', '.jsx', '.ts', '.tsx' ]
+	resolve: {
+		extensions: [ '.js', '.json', '.jsx', '.ts', '.tsx' ]
+	}
 };
