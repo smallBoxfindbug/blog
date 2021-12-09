@@ -2,20 +2,18 @@
  * @Author: heyouqin@moyi365.com
  * @LastEditors: heyouqin@moyi365.com
  * @Date: 2021-12-06 17:58:29
- * @LastEditTime: 2021-12-08 18:51:41
+ * @LastEditTime: 2021-12-09 15:31:14
  * @Descripttion: file content
  */
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HTMLWebpackPLugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 module.exports = {
 	entry: {
-		page1: path.join(__dirname, 'src/modules/page1', 'index.tsx'),
-		page2: path.join(__dirname, 'src/modules/page2', 'index.tsx')
-		// page2: path.resolve(__dirname, 'src/modules/page2/index.tsx')
+		blog: path.join(__dirname, 'src/modules/blog', 'index.tsx'),
+		manage: path.join(__dirname, 'src/modules/manage', 'index.tsx')
 	},
 	output: {
 		path: path.resolve('build'),
@@ -25,7 +23,7 @@ module.exports = {
 			arrowFunction: false
 		},
 		publicPath: '/',
-    clean: true,
+		clean: true
 	},
 	module: {
 		rules: [
@@ -72,27 +70,19 @@ module.exports = {
 		new CleanWebpackPlugin(),
 		new HTMLWebpackPLugin({
 			template: './public/index.html',
-			filename: 'page1.html',
-			chunks: [ 'page1' ],
-			excludeChunks: [ 'page2' ]
+			filename: 'blog.html',
+			chunks: [ 'blog' ],
+			excludeChunks: [ 'manage' ]
 		}),
 		new HTMLWebpackPLugin({
 			template: './public/index.html',
 			filename: 'index.html',
-			chunks: [ 'page2' ],
-			excludeChunks: [ 'page1' ]
+			chunks: [ 'manage' ],
+			excludeChunks: [ 'blog' ]
 		}),
 
 		new MiniCssExtractPlugin({
-			filename: '[name].[hash:8].css'
-		}),
-		new OptimizeCSSAssetsPlugin({
-			assetNameRegExp: /\.css$/g,
-			cssProcessor: require('cssnano'),
-			cssProcessorPluginOptions: {
-				preset: [ 'default', { discardComments: { removeAll: true } } ]
-			},
-			canPrint: true
+			filename: '[name]/[name].[hash:8].css'
 		})
 	],
 	resolve: {

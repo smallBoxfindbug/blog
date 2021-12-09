@@ -1,0 +1,46 @@
+.login {
+  width: 100vw;
+  height: 100vh;
+  background: url(../../../asserts/images/login_bg.webp) no-repeat top left;
+  background-size: 100% 100%;
+  position: relative;
+  .loginBox {
+    padding: 3vw;
+    width: 30vw;
+    height: 30vw;
+    background-color: #fff;
+    opacity: 0.6;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    border-radius: 1vw;
+    .title {
+      text-align: center;
+      font-size: 2vw;
+      color: rgb(160, 158, 158);
+      margin-bottom: 2vw;
+    }
+    & > div {
+      width: 20vw;
+      height: 3vw;
+      border-radius: 1vw;
+      margin: 0 auto 1vw;
+      input {
+        height: 3vw;
+        line-height: 3vw;
+        padding-left: 1vw;
+      }
+    }
+    button {
+      display: block;
+      width: 20vw;
+      height: 3vw;
+      opacity: 0.6;
+      border-radius: 1vw;
+      border: none;
+      margin: 0 auto 1vw;
+      background-color: rgb(74, 146, 206);
+    }
+  }
+}
